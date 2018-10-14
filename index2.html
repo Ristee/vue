@@ -22,14 +22,23 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="search">Find your car</label>
-                    <input type="text" name="search" id="search" class="form-control" placeholder="Enter something...">
+                    <input
+                            type="text"
+                            name="search"
+                            id="search"
+                            class="form-control"
+                            placeholder="Enter something..."
+                            v-model="search"
+                    >
                 </div>
 
                 <hr>
                 <ul class="list-group">
                     <li 
-                    v-for="car in cars"
+                    v-for="car, index in filteredCars"
                     class="list-group-item list-group-item-action pointer"
+                    @click="selectCar(index)"
+                    :class="{'active': selectedIndex === index}"
                     >
                     {{ car.name }} - {{ car.model }}
                 </li>
@@ -38,18 +47,20 @@
             <div class="col-md-8 pt-3">
                 <div class="row">
                     <div class="col-md-5">
-                        <h2>Ford</h2>
-                        <img src="images/focus.jpg" alt="" class="rounded detailed-car-image">
+                        <h2>{{ car.name}}</h2>
+                        <img :src="car.image" :alt="car.name" class="rounded detailed-car-image">
                     </div>
                     <div class="col-md-7 pt-2">
                         <h5>Car details</h5>
                         <ul>
-                            <li>Model - <strong>Focus</strong></li>
-                            <li>Year - <strong>2015</strong></li>
-                            <li>Owner - <strong>Max</strong></li>
+                            <li>Model - <strong>{{ car.model }}</strong></li>
+                            <li>Year - <strong>{{ car.year }}</strong></li>
+                            <li>Owner - <strong>{{ car.owner }}</strong></li>
                         </ul>
-                        <p>+7 921 12 425 25</p>
-                        <button class="btn btn-outline-success">Show phone</button>
+                        <div class="phone-block">
+                            <p v-if="phoneVisibility">{{ car.phone }}</p>
+                        </div>
+                        <button class="btn btn-outline-success" @click="phoneVisibility = !phoneVisibility">{{ phoneBtnText }}</button>
                         <button class="btn btn-primary">Buy</button>
                     </div>
                 </div>
@@ -58,7 +69,7 @@
     </div>
 
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-        <script src="app.js"></script>
+        <script src="./app.js"></script>
 </body>
 
 </html>
